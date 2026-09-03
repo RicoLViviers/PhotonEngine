@@ -25,16 +25,41 @@ FetchContent_MakeAvailable(glfw)
 find_package(OpenGL REQUIRED)
 
 set(SOURCES
-    sandbox/src/main.cpp
+    Sandbox/Sandbox.cpp
+    Engine/Core/PhotonEngine.cpp
+    Engine/Renderer/Renderer.cpp
+    Engine/Window/Window.cpp
+
 
     external/glad/src/glad.c
+
+
+    external/stb/stb_vorbis.c
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES}
+    Engine/Window/Window.cpp
+    Engine/Renderer/Texture/Texture.cpp)
+
+# Copy the shaders folder right next to the executable after building
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/Shaders/"
+            "$<TARGET_FILE_DIR:PhotonEngine>/Shaders/"
+    COMMENT "Syncing shaders to the build directory..."
+)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/assets/"
+            "$<TARGET_FILE_DIR:PhotonEngine>/assets/"
+    COMMENT "Syncing assets to the build directory..."
+)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    src
+    Engine
     external/glad/include
+    external/stb
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
