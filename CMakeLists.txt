@@ -29,6 +29,14 @@ set(SOURCES
     Engine/Core/PhotonEngine.cpp
     Engine/Renderer/Renderer.cpp
     Engine/Window/Window.cpp
+    Engine/Window/Window.cpp
+    Engine/Renderer/Texture/Texture.cpp
+    Engine/Renderer/Camera/Camera.cpp
+
+    Engine/Scene/Transform/Transform.cpp
+    Engine/Scene/MeshComponent/MeshComponent.cpp
+    Engine/Scene/MeshComponent/Mesh.cpp
+    Engine/Scene/Entity.cpp
 
 
     external/glad/src/glad.c
@@ -37,9 +45,7 @@ set(SOURCES
     external/stb/stb_vorbis.c
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES}
-    Engine/Window/Window.cpp
-    Engine/Renderer/Texture/Texture.cpp)
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Copy the shaders folder right next to the executable after building
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
@@ -60,6 +66,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     Engine
     external/glad/include
     external/stb
+    external/glm
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
